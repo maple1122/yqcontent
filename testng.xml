@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<suite name="contentTest" parallel="false">
+
+    <test name="新闻管理-新闻">
+        <classes>
+            <class name="content.CreateContentTest"></class>
+            <class name="content.NoFinishedContentTest"></class>
+            <class name="content.FinishedContentTest"></class>
+            <class name="content.DeleteRecycleTest"></class>
+        </classes>
+    </test>
+    <test name="新闻管理-轮播管理">
+        <classes>
+            <class name="carousel.SetCarouselTest"></class>
+            <class name="carousel.CarouselManageTest"></class>
+        </classes>
+    </test>
+    <test name="新闻管理-内容样式卡管理">
+        <classes>
+            <class name="styleCard.AddCardTest"></class>
+            <class name="styleCard.CardManageTest"></class>
+        </classes>
+    </test>
+    <test name="新闻管理-专题管理">
+        <classes>
+            <class name="topic.AddTopicTest"></class>
+            <class name="topic.ArticleManageTest"></class>
+            <class name="topic.ChannelManageTest"></class>
+            <class name="topic.TopicManageTest"></class>
+        </classes>
+    </test>
+    <test name="新闻管理-评论管理">
+        <classes>
+            <class name="comment.CommentCheckTest"></class>
+            <class name="comment.CommentManageTest"></class>
+            <class name="comment.CommentReplyModelTest"></class>
+        </classes>
+    </test>
+    <test name="新闻管理-关键词管理">
+        <classes>
+            <class name="keyword.KeywordTest"></class>
+            <class name="keyword.SensitiveWordTest"></class>
+            <class name="keyword.WhiteWordTest"></class>
+            <class name="keyword.HotSearchWordTest"></class>
+        </classes>
+    </test>
+    <listeners>
+        <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+        <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+    </listeners>
+</suite>
