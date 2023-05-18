@@ -21,8 +21,8 @@ public class CommentCheck extends LoginPortal {
     //审核
     public static void check() throws InterruptedException {
         searchByKeyword("autoTest");
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTable']/tbody/tr"))) {//校验是否取到了数据
-            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTable']/tbody/tr"));//数据list
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTabel']/tbody/tr"))) {//校验是否取到了数据
+            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTabel']/tbody/tr"));//数据list
             listTr.get(0).findElement(By.xpath("td[10]/a[1]")).click();//点击第一条数据的审核
             Thread.sleep(500);
             driver.findElement(By.className("layui-layer-btn0")).click();//确定审核
@@ -34,8 +34,8 @@ public class CommentCheck extends LoginPortal {
     //屏蔽
     public static void shield() throws InterruptedException {
         searchByKeyword("autoTest");
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTable']/tbody/tr"))) {//校验是否取到了数据
-            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTable']/tbody/tr"));//数据list
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTabel']/tbody/tr"))) {//校验是否取到了数据
+            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTabel']/tbody/tr"));//数据list
             String oper = listTr.get(0).findElement(By.xpath("td[10]/a[2]")).getText();//获取是否已屏蔽
             listTr.get(0).findElement(By.xpath("td[10]/a[2]")).click();//点击屏蔽/取消屏蔽
             Thread.sleep(500);
@@ -49,8 +49,8 @@ public class CommentCheck extends LoginPortal {
     //测试删除
     public static void delete() throws InterruptedException {
         searchByKeyword("autoTest");
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTable']/tbody/tr"))) {//校验是否取到了数据
-            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTable']/tbody/tr"));//数据list
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTabel']/tbody/tr"))) {//校验是否取到了数据
+            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTabel']/tbody/tr"));//数据list
             listTr.get(0).findElement(By.xpath("td[10]/a[3]")).click();//点击删除
             Thread.sleep(500);
             driver.findElement(By.className("layui-layer-btn0")).click();//确定确定
@@ -62,8 +62,8 @@ public class CommentCheck extends LoginPortal {
     //测试测试评论数据
     public static void deleteAuto() throws InterruptedException {
         searchByKeyword("autoTest");
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTable']/tbody/tr"))) {
-            driver.findElement(By.xpath("//table[@id='infoTable']/thead/tr/th[1]/input")).click();//点击全选
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTabel']/tbody/tr"))) {
+            driver.findElement(By.xpath("//table[@id='infoTabel']/thead/tr/th[1]/input")).click();//点击全选
             Thread.sleep(200);
             driver.findElement(By.id("deleteAllBtn")).click();//点击删除
             Thread.sleep(200);
@@ -76,8 +76,8 @@ public class CommentCheck extends LoginPortal {
     //禁言
     public static void muted() throws InterruptedException {
         searchByKeyword("autoTest");
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTable']/tbody/tr"))) {//校验是否取到了数据
-            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTable']/tbody/tr"));//数据list
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTabel']/tbody/tr"))) {//校验是否取到了数据
+            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTabel']/tbody/tr"));//数据list
             String oper = listTr.get(0).findElement(By.xpath("td[10]/a[4]")).getText();//获取是否已禁言
             String user = listTr.get(0).findElement(By.xpath("td[4]")).getText();//被禁言用户名
             listTr.get(0).findElement(By.xpath("td[10]/a[4]")).click();//点击禁言/取消禁言
@@ -93,8 +93,8 @@ public class CommentCheck extends LoginPortal {
     //回复
     public static void reply() throws InterruptedException {
         searchByKeyword("autoTest");
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTable']/tbody/tr"))) {//校验是否取到了数据
-            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTable']/tbody/tr"));//数据list
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@id='infoTabel']/tbody/tr"))) {//校验是否取到了数据
+            List<WebElement> listTr = driver.findElements(By.xpath("//table[@id='infoTabel']/tbody/tr"));//数据list
             listTr.get(0).findElement(By.xpath("td[10]/a[5]")).click();
             Thread.sleep(500);
         }

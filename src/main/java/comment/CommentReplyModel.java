@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author wufeng
- * 回复模板设置
+ * 回复模板设置_仅延庆项目可用
  * @date 2023/3/9 16:48
  */
 public class CommentReplyModel extends LoginPortal {

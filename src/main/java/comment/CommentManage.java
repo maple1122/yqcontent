@@ -88,12 +88,12 @@ public class CommentManage extends LoginPortal {
             for (int i = 0; i < 3; i++) {
                 if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {
                     if (CommonMethod.isJudgingElement(driver, By.className("loginBtn"))) driver = login();
-                    driver.get(domain + "/content/cmsContentComment/commentCheck");
+                    driver.get(domain + "/content/cmsContentComment/manager");
                     Thread.sleep(3000);
                     if (!CommonMethod.isJudgingElement(driver, By.className("fold-pack"))) {
                         CommonMethod.jumpModule(driver, "新闻管理");
                         Thread.sleep(2000);
-                        driver.get(domain + "/content/cmsContentComment/commentCheck");
+                        driver.get(domain + "/content/cmsContentComment/manager");
                     }
 //                    driver.findElement(By.xpath("//div[@class='list-center']/a[2]")).click();
                     Thread.sleep(2000);
@@ -107,6 +107,8 @@ public class CommentManage extends LoginPortal {
                 driver.findElement(By.linkText(siteName)).click();
                 Thread.sleep(3000);
             }
+
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -28,12 +28,17 @@ public class AddCard extends LoginPortal {
         driver.findElement(By.xpath("//div[@id='contentBtn-list']/span[1]")).click();//添加快讯
         Thread.sleep(500);
         driver.findElement(By.xpath("//form[@data-form='form1']/div[1]/div/input")).sendKeys("autoTest-快讯内容样式卡-" + System.currentTimeMillis());//录入快讯内容样式卡标题
-        if (type == 2) driver.findElement(By.xpath("//form[@data-form='form1']/div[2]/div/div[2]")).click();//参数为卡片样式
-        driver.findElement(By.xpath("//form[@data-form='form1']/div[3]/div/div[1]")).click();//点击上传icon
+        int num = 1;
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//form[@data-form='form1']/div[6]"))) {
+            if (type == 2)
+                driver.findElement(By.xpath("//form[@data-form='form1']/div[2]/div/div[2]")).click();//参数为卡片样式
+            num += 1;
+        }
+        driver.findElement(By.xpath("//form[@data-form='form1']/div[" + (num + 1) + "]/div/div[1]")).click();//点击上传icon
         Thread.sleep(200);
         CommonMethod.getImg(driver);//资源库上传图片
         Thread.sleep(1000);
-        driver.findElement(By.xpath("//form[@data-form='form1']/div[4]/div/input")).click();//点击内容来源
+        driver.findElement(By.xpath("//form[@data-form='form1']/div[" + (num + 3) + "]/div/input")).click();//点击内容来源
         //选择关联频道
         List<WebElement> list1, list2;
         Boolean selected = false;
@@ -41,12 +46,13 @@ public class AddCard extends LoginPortal {
             Thread.sleep(2000);
             if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='channelSelect_1_ul']/li"))) break;
         }
-        list1 = driver.findElements(By.xpath("//ul[@id='channelSelect_1_ul']/li[1]"));//第一层
+        list1 = driver.findElements(By.xpath("//ul[@id='channelSelect_1_ul']/li"));//第一层
         for (int i1 = 0; i1 < list1.size(); i1++) {
             list2 = list1.get(i1).findElements(By.xpath("ul/li"));//第二层
             for (int i2 = 0; i2 < list2.size(); i2++) {
-                if (list2.get(i2).findElement(By.tagName("a")).getAttribute("title").equals("测试频道")) {
-                    list2.get(i2).findElement(By.xpath("span[2]")).click();
+                if (list2.get(i2).findElement(By.tagName("a")).getAttribute("title").equals("频道测试")) {
+                    if (list2.get(i2).findElement(By.xpath("span[2]")).getAttribute("class").contains("false"))
+                        list2.get(i2).findElement(By.xpath("span[2]")).click();
                     selected = true;
                     break;
                 }
@@ -56,7 +62,7 @@ public class AddCard extends LoginPortal {
         Thread.sleep(200);
         driver.findElement(By.xpath("//div[@class='content-source modal-win']/div/button[1]")).click();
         Thread.sleep(500);
-        driver.findElement(By.xpath("//form[@data-form='form1']/div[5]/div/textarea")).sendKeys("autoTest-快讯-内容简介~");
+        driver.findElement(By.xpath("//form[@data-form='form1']/div[" + (num + 4) + "]/div/textarea")).sendKeys("autoTest-快讯-内容简介~");
         Thread.sleep(500);
         driver.findElement(By.className("layui-layer-btn0")).click();
         System.out.println("~~~ addFlash()，创建快讯内容样式卡，执行成功 ~~~");
@@ -151,7 +157,7 @@ public class AddCard extends LoginPortal {
         Thread.sleep(500);
         driver.findElement(By.xpath("//form[@data-form='form4']/div[1]/div/input")).sendKeys("autoTest-媒体号内容样式卡-" + System.currentTimeMillis());//录入媒体号内容样式卡标题
         Thread.sleep(500);
-        driver.findElement(By.xpath("//form[@data-form='form4']/div[4]/div/div[1]")).click();//点击内容来源
+        driver.findElement(By.xpath("//form[@data-form='form4']/div[last()]/div/div[1]")).click();//点击内容来源
         for (int i = 0; i < 5; i++) {
             Thread.sleep(2000);
             if (CommonMethod.isJudgingElement(driver, By.xpath("//div[@class='mark_1_center_in']/div"))) break;
@@ -200,7 +206,19 @@ public class AddCard extends LoginPortal {
         }
         Thread.sleep(500);
         driver.findElement(By.className("mark_2_add")).click();//添加
-        Thread.sleep(1000);
+        Thread.sleep(2000);
+
+        if (type != 1) {
+            if (!CommonMethod.isJudgingElement(driver, By.className("content-special-item"))) Thread.sleep(2000);
+            List<WebElement> subs = driver.findElements(By.className("content-special-item"));
+            for (int i = 0; i < subs.size(); i++) {
+                if (!CommonMethod.isJudgingElement(subs.get(i), By.xpath("./div[2]/div/div/div/img"))) {
+                    subs.get(i).findElement(By.xpath("./div[2]/div/div/div")).click();
+                    CommonMethod.getImg(driver);//资源库上传图片
+                }
+                Thread.sleep(1000);
+            }
+        }
         driver.findElement(By.className("layui-layer-btn0")).click();//确定
         System.out.println("~~~ addSubject()，创建专题内容样式卡，执行成功 ~~~");
         Thread.sleep(3000);
@@ -217,11 +235,16 @@ public class AddCard extends LoginPortal {
         Thread.sleep(500);
         driver.findElement(By.xpath("//div[@id='contentBtn-list']/span[6]")).click();//添加服务样式卡
         Thread.sleep(500);
+
         driver.findElement(By.xpath("//form[@data-form='form6']/div[1]/div/input")).sendKeys("autoTest-服务内容样式卡-" + System.currentTimeMillis());//录入服务内容样式卡标题
         Thread.sleep(500);
-        if (type == 2) driver.findElement(By.xpath("//form[@data-form='form6']/div[2]/div/div[2]")).click();//卡片样式
-        if (set == 2) driver.findElement(By.xpath("//form[@data-form='form6']/div[3]/div/div[2]")).click();//双行
-        driver.findElement(By.xpath("//form[@data-form='form6']/div[5]/div/div[1]")).click();//点击内容来源
+        int num_content = 4;
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//form[@data-form='form6']/div[5]"))) {
+            if (type == 2) driver.findElement(By.xpath("//form[@data-form='form6']/div[2]/div/div[2]")).click();//卡片样式
+            if (set == 2) driver.findElement(By.xpath("//form[@data-form='form6']/div[3]/div/div[2]")).click();//双行
+            num_content = 5;
+        } else if (set == 2) driver.findElement(By.xpath("//form[@data-form='form6']/div[2]/div/div[2]")).click();
+        driver.findElement(By.xpath("//form[@data-form='form6']/div[" + num_content + "]/div/div[1]")).click();//点击内容来源
         for (int i = 0; i < 5; i++) {
             Thread.sleep(2000);
             if (CommonMethod.isJudgingElement(driver, By.xpath("//div[@class='mark_1_center_in']/div"))) break;

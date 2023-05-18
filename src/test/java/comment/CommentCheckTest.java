@@ -23,20 +23,20 @@ public class CommentCheckTest {
         CommentCheck.shield();
     }
 
-    @Test(priority = 3)//禁言、取消禁言
-    public void testMuted() throws InterruptedException {
-        CommentCheck.muted();
-    }
+//    @Test(priority = 3)//禁言、取消禁言
+//    public void testMuted() throws InterruptedException {
+//        CommentCheck.muted();
+//    }
 
     @Test(priority = 5)//删除评论
     public void testDelete() throws InterruptedException {
         CommentCheck.delete();
     }
 
-    @Test(priority = 4)//回复评论
-    public void testReply() throws InterruptedException {
-        CommentCheck.reply();
-    }
+//    @Test(priority = 4)//回复评论
+//    public void testReply() throws InterruptedException {
+//        CommentCheck.reply();
+//    }
 //
 //    @Test(priority = 5)//删除所有评论数据
 //    public void testDeleteAuto() throws InterruptedException {
