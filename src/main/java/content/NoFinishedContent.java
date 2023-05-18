@@ -195,35 +195,38 @@ public class NoFinishedContent extends LoginPortal {
 
     //审核并排序
     public static void publishAndSort(int type) throws InterruptedException {
+
         CommonMethod.getTestTree(driver);//切换到测试频道
         WebElement article = CommonMethod.getTestArticle(driver, 1);//获取测试稿件
 
-        if (article != null) {
-            article.findElement(By.xpath("div/div/div[@class='left-content']/input")).click();//选中测试稿件
-            Thread.sleep(200);
-            driver.findElement(By.xpath("//ul[@class='opt-bar-bt clearfix']/li[@data-type='sortAndPublish']/a")).click();//点击审核并排序
-            Thread.sleep(200);
-            String name = "排序";
-            if (type < 1 || type > 4) type = 1;//如果type值非1-4，则默认为1（1：排序、2：置顶、3：冻结、4：上轮播）
-            driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[" + type + "]/div")).click();//选择稿件操作类型
-            if (type == 1)
-                driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[1]/span/input")).sendKeys("20");//排序到第20位
-            if (type == 2) {
-                driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[2]/span[1]/input")).sendKeys("20");//置顶到第20位
-                name = "置顶";
-            }
-            if (type == 3) {
-                driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[3]/span/input")).sendKeys("3");//冻结到第3位
-                name = "冻结";
-            }
-            if (type == 4) {
-                driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[4]/span/div[1]")).click();//上轮播为是
-                name = "上轮播";
-            }
-            Thread.sleep(500);
-            driver.findElement(By.className("layui-layer-btn0")).click();//点击确定
-            System.out.println("~~~ publishAndSort(" + type + ")，稿件审核并排序（" + name + "），执行成功 ~~~");
-        } else System.out.println("没有待审核的测试稿件");
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@class='opt-bar-bt clearfix']/li[@data-type='sortAndPublish']"))) {
+            if (article != null) {
+                article.findElement(By.xpath("div/div/div[@class='left-content']/input")).click();//选中测试稿件
+                Thread.sleep(200);
+                driver.findElement(By.xpath("//ul[@class='opt-bar-bt clearfix']/li[@data-type='sortAndPublish']/a")).click();//点击审核并排序
+                Thread.sleep(200);
+                String name = "排序";
+                if (type < 1 || type > 4) type = 1;//如果type值非1-4，则默认为1（1：排序、2：置顶、3：冻结、4：上轮播）
+                driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[" + type + "]/div")).click();//选择稿件操作类型
+                if (type == 1)
+                    driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[1]/span/input")).sendKeys("20");//排序到第20位
+                if (type == 2) {
+                    driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[2]/span[1]/input")).sendKeys("20");//置顶到第20位
+                    name = "置顶";
+                }
+                if (type == 3) {
+                    driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[3]/span/input")).sendKeys("3");//冻结到第3位
+                    name = "冻结";
+                }
+                if (type == 4) {
+                    driver.findElement(By.xpath("//form[@id='formSpModal']/div[2]/div/div[4]/span/div[1]")).click();//上轮播为是
+                    name = "上轮播";
+                }
+                Thread.sleep(500);
+                driver.findElement(By.className("layui-layer-btn0")).click();//点击确定
+                System.out.println("~~~ publishAndSort(" + type + ")，稿件审核并排序（" + name + "），执行成功 ~~~");
+            } else System.out.println("没有待审核的测试稿件");
+        } else System.out.println("当前环境没有审核并排序功能");
         Thread.sleep(3000);
     }
 
@@ -413,7 +416,8 @@ public class NoFinishedContent extends LoginPortal {
             driver = login();//调起浏览器，进行portal账号登录
             for (int i = 0; i < 3; i++) {//登录异常可以重试三次
                 if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {//校验是否还未打开功能页面，如新闻管理页面
-                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn"))) driver = login();//校验当前页面是否还有登录框，如还未登录成功则再次登录
+                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn")))
+                        driver = login();//校验当前页面是否还有登录框，如还未登录成功则再次登录
                     driver.get(domain + "/content/content/list/init");//直接跳转到新闻管理
                     Thread.sleep(3000);
                     if (!CommonMethod.isJudgingElement(driver, By.className("fold-pack"))) {//如果未跳转到应用页面（新闻管理）

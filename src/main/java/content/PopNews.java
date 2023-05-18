@@ -20,6 +20,10 @@ public class PopNews extends LoginPortal {
     //新增首屏浮窗
     public static void addPopNews() throws InterruptedException {
 
+        if (CommonMethod.isJudgingElement(driver, By.cssSelector("div.send-channel.bullet-news-list.layui-form.send-channel-close")))
+            driver.findElement(By.id("ejectNews")).click();//点击首屏浮窗
+        Thread.sleep(1000);
+
         driver.findElement(By.id("openBulletSelect")).click();//点击新增
         Thread.sleep(500);
         driver.findElement(By.className("float-window-select-btn")).click();//点击选择稿件
@@ -72,7 +76,7 @@ public class PopNews extends LoginPortal {
                 driver.findElement(By.className("layui-layer-btn0")).click();//点击确定新增
                 Thread.sleep(1000);
                 System.out.println("~~~ addPopNews()，新建首屏浮窗 ~~~");
-            }else System.out.println("测试test频道下没有稿件");
+            } else System.out.println("测试test频道下没有稿件");
         } else System.out.println("没找到测试频道");
         if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")))//校验首页浮窗图层是否还是打开的
             driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
@@ -81,6 +85,7 @@ public class PopNews extends LoginPortal {
 
     //修改
     public static void editPopNews() throws InterruptedException {
+
         searchPopNews();//搜索autoTest数据
         if (!CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='xlist']/li"))) {//没找到autoTest数据
             addPopNews();//新增autoTest数据
@@ -104,6 +109,7 @@ public class PopNews extends LoginPortal {
 
     //删除
     public static void deletePopNews() throws InterruptedException {
+
         searchPopNews();//搜索autoTest数据
         if (!CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='xlist']/li"))) {//没找到autoTest数据
             addPopNews();//新增autoTest数据
@@ -117,6 +123,7 @@ public class PopNews extends LoginPortal {
         Thread.sleep(200);
         driver.findElement(By.className("layui-layer-btn0")).click();//确定删除
         System.out.println("~~~ deletePopNews()，删除首屏浮窗，执行成功 ~~~");
+        Thread.sleep(1000);
         if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")))//校验首页浮窗图层是否还在
             driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
         Thread.sleep(3000);
@@ -124,6 +131,7 @@ public class PopNews extends LoginPortal {
 
     //开启关闭首屏浮窗
     public static void turnOnOrOff() throws InterruptedException {
+
         searchPopNews();//搜索autoTest数据
         if (!CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='xlist']/li"))) {//没找到autoTest数据
             addPopNews();//新增autoTest数据
@@ -146,6 +154,10 @@ public class PopNews extends LoginPortal {
 
     //搜索
     private static void searchPopNews() throws InterruptedException {
+        if (CommonMethod.isJudgingElement(driver, By.cssSelector("div.send-channel.bullet-news-list.layui-form.send-channel-close")))
+            driver.findElement(By.id("ejectNews")).click();//点击首屏浮窗
+        Thread.sleep(2000);
+
         driver.findElement(By.xpath("//form[@id='formNewsList']/div[@class='layui-unselect layui-form-select']/div")).click();//点击样式类型筛选框
         Thread.sleep(100);
         driver.findElement(By.xpath("//div[@class='layui-unselect layui-form-select layui-form-selected']/dl/dd[2]")).click();//点击全部
@@ -163,7 +175,8 @@ public class PopNews extends LoginPortal {
             driver = login();//调起浏览器，进行portal账号登录
             for (int i = 0; i < 3; i++) {//登录异常可以重试三次
                 if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {//校验是否还未打开功能页面，如新闻管理页面
-                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn"))) driver = login();//校验当前页面是否还有登录框，如还未登录成功则再次登录
+                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn")))
+                        driver = login();//校验当前页面是否还有登录框，如还未登录成功则再次登录
                     driver.get(domain + "/content/content/list/init");//直接跳转到新闻管理
                     Thread.sleep(3000);
                     if (!CommonMethod.isJudgingElement(driver, By.className("fold-pack"))) {//如果未跳转到应用页面（新闻管理）
@@ -181,7 +194,9 @@ public class PopNews extends LoginPortal {
                 driver.findElement(By.linkText(siteName)).click();//找到目标机构应用并点击切换
                 Thread.sleep(3000);
             }
-            driver.findElement(By.id("ejectNews")).click();//点击首屏浮窗
+
+            if (CommonMethod.isJudgingElement(driver, By.cssSelector("div.send-channel.bullet-news-list.layui-form.send-channel-close")))
+                driver.findElement(By.id("ejectNews")).click();//点击首屏浮窗
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();

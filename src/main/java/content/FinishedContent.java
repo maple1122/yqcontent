@@ -75,80 +75,82 @@ public class FinishedContent extends LoginPortal {
         unRelateAll();//清空已关联的测试稿件
         int testSign = 0;//可冻结的稿件位置-1
         String label;
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='ulListArea2']/li"))) {//校验是否有数据
-            List<WebElement> lists = driver.findElements(By.xpath("//ul[@id='ulListArea2']/li"));//获取稿件列表
-            boolean testable = false;//是否可冻结
-            for (int i = 0; i < lists.size(); i++) {//遍历每条稿件
-                List<WebElement> labels = lists.get(i).findElements(By.xpath("./div/div/div[2]/div/section/span"));//稿件的标签列表
-                for (int j = 0; j < labels.size(); j++) {//编辑稿件标签列表
-                    testable = true;//初始默认为可冻结
-                    label = labels.get(j).getAttribute("class");
-                    if (label.contains("carousel") || label.contains("istop") || label.contains("isfreeze")) {//校验是否有轮播、置顶、冻结、上轮播标签
-                        testable = false;//有以上标签则为非可冻结位
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@class='opt-bar-bt clearfix']/li[@data-type='sortAndRelate']"))) {
+            if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='ulListArea2']/li"))) {//校验是否有数据
+                List<WebElement> lists = driver.findElements(By.xpath("//ul[@id='ulListArea2']/li"));//获取稿件列表
+                boolean testable = false;//是否可冻结
+                for (int i = 0; i < lists.size(); i++) {//遍历每条稿件
+                    List<WebElement> labels = lists.get(i).findElements(By.xpath("./div/div/div[2]/div/section/span"));//稿件的标签列表
+                    for (int j = 0; j < labels.size(); j++) {//编辑稿件标签列表
+                        testable = true;//初始默认为可冻结
+                        label = labels.get(j).getAttribute("class");
+                        if (label.contains("carousel") || label.contains("istop") || label.contains("isfreeze")) {//校验是否有轮播、置顶、冻结、上轮播标签
+                            testable = false;//有以上标签则为非可冻结位
+                            break;
+                        }
+                    }
+                    if (testable) {//稿件循环了所有标签无置顶、冻结、轮播相关标签
+                        testSign = i;//获取到可冻结的位置，testSign为位置-1
                         break;
                     }
                 }
-                if (testable) {//稿件循环了所有标签无置顶、冻结、轮播相关标签
-                    testSign = i;//获取到可冻结的位置，testSign为位置-1
-                    break;
+            }
+            CommonMethod.getTestTree(driver);//切换的测试test频道
+            WebElement article = CommonMethod.getTestArticle(driver, 2);//切换到成稿区
+            if (article != null) {//如果稿件非空
+                article.findElement(By.xpath("div/div/div/input")).click();//选择测试稿件
+                Thread.sleep(200);
+                driver.findElement(By.xpath("//ul[@class='opt-bar-bt clearfix']/li[@data-type='sortAndRelate']")).click();//点击关联并排序
+                for (int i = 0; i < 5; i++) {
+                    Thread.sleep(2000);
+                    if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='undefined_1_ul']/li")))
+                        break;//循环等待到取到了频道列表
                 }
-            }
-        }
-        CommonMethod.getTestTree(driver);//切换的测试test频道
-        WebElement article = CommonMethod.getTestArticle(driver, 2);//切换到成稿区
-        if (article != null) {//如果稿件非空
-            article.findElement(By.xpath("div/div/div/input")).click();//选择测试稿件
-            Thread.sleep(200);
-            driver.findElement(By.xpath("//ul[@class='opt-bar-bt clearfix']/li[@data-type='sortAndRelate']")).click();//点击关联并排序
-            for (int i = 0; i < 5; i++) {
-                Thread.sleep(2000);
-                if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='undefined_1_ul']/li")))
-                    break;//循环等待到取到了频道列表
-            }
-            //选择关联频道
-            List<WebElement> list1, list2;//定义一级、二级频道
-            Boolean relate = false;
-            list1 = driver.findElements(By.xpath("//ul[@id='undefined_1_ul']/li"));//第一层频道列表
-            for (int i1 = 0; i1 < list1.size(); i1++) {
-                list2 = list1.get(i1).findElements(By.xpath("ul/li"));//第二层频道列表
-                for (int i2 = 0; i2 < list2.size(); i2++) {
-                    if (list2.get(i2).findElement(By.tagName("a")).getAttribute("title").equals("频道测试")) {//找到测试频道
-                        list2.get(i2).findElement(By.xpath("span[2]")).click();//选择测试频道
-                        relate = true;
-                        break;
+                //选择关联频道
+                List<WebElement> list1, list2;//定义一级、二级频道
+                Boolean relate = false;
+                list1 = driver.findElements(By.xpath("//ul[@id='undefined_1_ul']/li"));//第一层频道列表
+                for (int i1 = 0; i1 < list1.size(); i1++) {
+                    list2 = list1.get(i1).findElements(By.xpath("ul/li"));//第二层频道列表
+                    for (int i2 = 0; i2 < list2.size(); i2++) {
+                        if (list2.get(i2).findElement(By.tagName("a")).getAttribute("title").equals("频道测试")) {//找到测试频道
+                            list2.get(i2).findElement(By.xpath("span[2]")).click();//选择测试频道
+                            relate = true;
+                            break;
+                        }
                     }
-                }
-                if (relate) break;
-            }
-            Thread.sleep(1000);
-            //进行排序规则设置
-            if (relate) {
-                String name = "排序";
-                if (type < 1 || type > 4) type = 1;//如果type值非1-4，则默认为1（1：排序、2：置顶、3：冻结、4：上轮播）
-                driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[" + type + "]/div")).click();//选择稿件操作类型
-                if (type == 1)
-                    driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[1]/span/input")).sendKeys("20");//默认20，不校验是否大于目标频道稿件数
-                if (type == 2) {
-                    driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[2]/span[1]/input")).sendKeys("20");//默认20，不校验是否大于目标频道稿件数
-                    name = "置顶";
-                }
-                if (type == 3) {
-                    driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[3]/span/input")).sendKeys(String.valueOf(testSign + 1));//录入目标频道的可冻结位
-                    name = "冻结";
-                }
-                if (type == 4) {
-                    driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[4]/span/div[1]")).click();//设置上轮播
-                    name = "上轮播";
+                    if (relate) break;
                 }
                 Thread.sleep(1000);
-                driver.findElement(By.className("layui-layer-btn0")).click();//确定
-                System.out.println("~~~ relateAndSort(" + type + ")，稿件关联并排序（" + name + "），执行成功 ~~~");
-            } else {
-                driver.findElement(By.className("layui-layer-btn1")).click();//取消
-                System.out.println("没有找到关联目标频道（频道测试）");
-            }
-            Thread.sleep(4000);
-        } else System.out.println("没有auto的测试数据！");
+                //进行排序规则设置
+                if (relate) {
+                    String name = "排序";
+                    if (type < 1 || type > 4) type = 1;//如果type值非1-4，则默认为1（1：排序、2：置顶、3：冻结、4：上轮播）
+                    driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[" + type + "]/div")).click();//选择稿件操作类型
+                    if (type == 1)
+                        driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[1]/span/input")).sendKeys("20");//默认20，不校验是否大于目标频道稿件数
+                    if (type == 2) {
+                        driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[2]/span[1]/input")).sendKeys("20");//默认20，不校验是否大于目标频道稿件数
+                        name = "置顶";
+                    }
+                    if (type == 3) {
+                        driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[3]/span/input")).sendKeys(String.valueOf(testSign + 1));//录入目标频道的可冻结位
+                        name = "冻结";
+                    }
+                    if (type == 4) {
+                        driver.findElement(By.xpath("//form[@id='formSrModal']/div/div/div[4]/span/div[1]")).click();//设置上轮播
+                        name = "上轮播";
+                    }
+                    Thread.sleep(1000);
+                    driver.findElement(By.className("layui-layer-btn0")).click();//确定
+                    System.out.println("~~~ relateAndSort(" + type + ")，稿件关联并排序（" + name + "），执行成功 ~~~");
+                } else {
+                    driver.findElement(By.className("layui-layer-btn1")).click();//取消
+                    System.out.println("没有找到关联目标频道（频道测试）");
+                }
+                Thread.sleep(4000);
+            } else System.out.println("没有auto的测试数据！");
+        } else System.out.println("当前环境没有关联并排序功能");
     }
 
     //取消关联

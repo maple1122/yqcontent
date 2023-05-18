@@ -121,10 +121,9 @@ public class CreateContent extends LoginPortal {
         CommonMethod.getPic(driver);//选择素材库视频
         Thread.sleep(2000);
         driver.switchTo().defaultContent();//切换到默认页面
-//        Thread.sleep(2000);
-//        w.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("sy-tools_setImg")));
 
         Thread.sleep(2000);
+        if(!CommonMethod.isJudgingElement(driver,By.className("sy-tools_setImg"))) Thread.sleep(2000);
         driver.findElement(By.className("sy-tools_setImg")).click();//视频封面设置为列表图
         Thread.sleep(1000);
         driver.findElement(By.cssSelector("button.cropSet-button.ok.save")).click();//确定设置为列表图

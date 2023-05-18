@@ -129,7 +129,6 @@ public class CommonMethod {
         if (type == 1 || type == 2) {
             if (type == 1 && !isJudgingElement(driver, By.cssSelector("div.accordion.accordionlist.accordion1.opened"))) {//待编区，且未打开状态
                 driver.findElement(By.cssSelector("div.accordion.accordionlist.accordion1")).click();//打开待编区
-                Thread.sleep(2000);
             }
             if (isJudgingElement(driver, By.xpath("//ul[@id='ulListArea" + type + "']/li/div"))) {
                 String articleName;
@@ -141,6 +140,8 @@ public class CommonMethod {
                     }
                 }
             }
+            Thread.sleep(2000);
+
         } else System.out.println("type传值错误，1为待编区；2为成稿区；其他值无效");
         return null;
     }
