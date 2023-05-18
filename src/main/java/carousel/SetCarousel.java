@@ -23,7 +23,7 @@ public class SetCarousel extends LoginPortal {
     //编辑新闻稿件开启/关闭栏目轮播
     public static void setCarousel(Boolean open) throws InterruptedException {
         CommonMethod.getTestTree(driver);//切换到测试频道
-        WebElement article = CommonMethod.getTestArticle(driver, 1);//获取测试稿件
+        WebElement article = CommonMethod.getTestArticle(driver, 2);//获取测试稿件
         Thread.sleep(2000);
 
         if (article != null) {
