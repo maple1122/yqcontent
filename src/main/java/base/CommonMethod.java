@@ -1,8 +1,13 @@
 package base;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.Point;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -256,18 +261,18 @@ public class CommonMethod {
     public static boolean jumpModule(WebDriver driver, String serviceName) throws InterruptedException {
         boolean success = false;
         Thread.sleep(1000);
-        if (isJudgingElement(driver, By.className("swiper-wrapper"))) {
-            if (driver.findElement(By.xpath("//div[@class='swiper-wrapper']/div")).getAttribute("class").contains("swiper-slide")) {
-                List<WebElement> elements = driver.findElements(By.xpath("//div[@class='swiper-wrapper']/div"));
+        if (isJudgingElement(driver, By.className("swiper-wrapper"))) {//是否还在portal页面
+            if (driver.findElement(By.xpath("//div[@class='swiper-wrapper']/div")).getAttribute("class").contains("swiper-slide")) {//是否有左右滑动的分页
+                List<WebElement> elements = driver.findElements(By.xpath("//div[@class='swiper-wrapper']/div"));//获取滑动分页的数量
                 for (int i = 0; i < elements.size(); i++) {
                     for (int n = 1; n < 4; n++) {
                         for (int a = 1; a < 6; a++) {
-                            if (elements.get(i).findElement(By.xpath("div/div[" + n + "]/a[" + a + "]/div/div/p")).getText().equals(serviceName)) {
-                                elements.get(i).findElement(By.xpath("div/div[" + n + "]/a[" + a + "]/div/div/p")).click();
+                            if (elements.get(i).findElement(By.xpath("div/div[" + n + "]/a[" + a + "]/div/div/p")).getText().equals(serviceName)) {//校验当前页面是否有需要的服务，如新闻管理、媒体号管理等
+                                elements.get(i).findElement(By.xpath("div/div[" + n + "]/a[" + a + "]/div/div/p")).click();//找到了则点击该服务
                                 Thread.sleep(2000);
                                 for (int j = 0; j < 3; j++) {
-                                    swichWindow(driver);
-                                    if (isJudgingElement(driver, By.xpath("//div[@class='header-user-pack']"))) {
+                                    swichWindow(driver);//切换到新标签页
+                                    if (isJudgingElement(driver, By.xpath("//div[@class='header-user-pack']"))) {//校验是否跳转到了该服务页，如新闻管理页面
                                         success = true;
                                         break;
                                     }
@@ -296,4 +301,16 @@ public class CommonMethod {
         targetLocator.window(handle);// 切换到对应标签页
     }
 
+//    //验证码识别
+//    public static void vCode(WebDriver driver) throws IOException {
+//        WebElement ele=driver.findElement(By.id("canvas"));
+//        File screenshot=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+//        BufferedImage fullImg= ImageIO.read(screenshot);
+//        Point point=ele.getLocation();
+//        int eleWidth=ele.getSize().getWidth();
+//        int eleHeight=ele.getSize().getHeight();
+//        BufferedImage eleScreenshot=fullImg.getSubimage(point.getX(),point.getY(),eleWidth,eleHeight);
+//        ImageIO.write(eleScreenshot,"jpg",screenshot);
+//        File screenshotLocation=new File("D:\\autotest\\vCode");
+//    }
 }

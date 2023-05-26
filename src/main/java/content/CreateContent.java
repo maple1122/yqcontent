@@ -8,6 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
+
 /**
  * @author wufeng
  * @date 2022/2/7 14:58
@@ -183,14 +185,14 @@ public class CreateContent extends LoginPortal {
     //初始化登录
     static {
         try {
-            driver = login();
+            driver = login();//初始化浏览器
             for (int i = 0; i < 3; i++) {
-                if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {
-                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn"))) driver = login();
-                    driver.get(domain + "/content/content/list/init");
+                if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {//校验是否没有header（header是portal页面中的标签）
+                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn"))) driver = login();//是否需要登录，需要登录则登录
+                    driver.get(domain + "/content/content/list/init");//url直接跳转到新闻管理链接
                     Thread.sleep(3000);
-                    if (!CommonMethod.isJudgingElement(driver, By.className("fold-pack"))) {
-                        CommonMethod.jumpModule(driver, "新闻管理");
+                    if (!CommonMethod.isJudgingElement(driver, By.className("fold-pack"))) {//是否未跳转到新闻管理页面成功
+                        CommonMethod.jumpModule(driver, "新闻管理");//点击新闻管理切换到新标签页
                         Thread.sleep(2000);
                     }
                 } else break;

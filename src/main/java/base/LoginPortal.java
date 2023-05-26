@@ -28,15 +28,15 @@ public class LoginPortal {
 
     //浏览器初始化
     public static WebDriver initDriver() {
-        System.setProperty("webdriver.chrome.driver", "D:\\autotest\\tools\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "D:\\autotest\\tools\\chromedriver.exe");//浏览器驱动
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("test-type");
         options.addArguments("ignore-certificate-errors");
         options.setAcceptInsecureCerts(true);
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);//创建浏览器对象
 
-        driver.manage().window().maximize();
+        driver.manage().window().maximize();//最大化
         return driver;
     }
 
@@ -59,7 +59,10 @@ public class LoginPortal {
                 action.release();
 
                 Thread.sleep(2000);
+//            }
             } else Thread.sleep(8000);//验证码方式，增加等待时间，手动输入验证码
+//            CommonMethod.vCode(driver);
+
             driver.findElement(By.className("loginBtn")).click();//点击登录
             Thread.sleep(3000);
         }
@@ -77,8 +80,8 @@ public class LoginPortal {
     public static List<String> env() {
 
 //        String envString = "envtest";//测试环境
-        String envString = "envyanshi";//演示环境
-//        String envString = "envyqtest";//延庆测试环境
+//        String envString = "envyanshi";//演示环境
+        String envString = "envyqtest";//延庆测试环境
 
         Properties pro = new Properties();
         InputStream prois;
@@ -88,11 +91,12 @@ public class LoginPortal {
             prois = new FileInputStream("application.properties");
             pro.load(new InputStreamReader(prois, "UTF-8"));
 
-            String domain = (String) pro.getProperty(envString + ".domain");
-            String siteName = (String) pro.getProperty(envString + ".siteName");
-            String username = (String) pro.getProperty(envString + ".username");
-            String password = (String) pro.getProperty(envString + ".password");
+            String domain = (String) pro.getProperty(envString + ".domain");//获取域名
+            String siteName = (String) pro.getProperty(envString + ".siteName");//获取站点名
+            String username = (String) pro.getProperty(envString + ".username");//获取用户名
+            String password = (String) pro.getProperty(envString + ".password");//获取密码
 
+            //添加到list中
             envlist.add(domain);
             envlist.add(siteName);
             envlist.add(username);
