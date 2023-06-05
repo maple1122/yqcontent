@@ -1,6 +1,7 @@
 package base;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -60,7 +61,21 @@ public class LoginPortal {
 
                 Thread.sleep(2000);
 //            }
-            } else Thread.sleep(8000);//验证码方式，增加等待时间，手动输入验证码
+            } else {
+                //验证码
+                By canvasImg = By.id("canvas");
+                //验证码输入框
+//                By yzm = By.xpath("/html/body/div[1]/div/div/form/div[2]/input");
+                By yzm = By.className("passCode");
+                //JS修改验证码变为默认返回值
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("Math.random = function(){return 0}");
+                driver.findElement(canvasImg).click();
+                Thread.sleep(500);
+                //修改后默认验证码AAAA
+                driver.findElement(yzm).sendKeys("AAAA");
+            }
+//                Thread.sleep(8000);//验证码方式，增加等待时间，手动输入验证码
 //            CommonMethod.vCode(driver);
 
             driver.findElement(By.className("loginBtn")).click();//点击登录
