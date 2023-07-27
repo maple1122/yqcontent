@@ -62,7 +62,7 @@ public class LoginPortal {
                 Thread.sleep(2000);
 //            }
             } else {
-                //验证码
+                //验证码，修改前端js为默认验证码
                 By canvasImg = By.id("canvas");
                 //验证码输入框
 //                By yzm = By.xpath("/html/body/div[1]/div/div/form/div[2]/input");
@@ -91,12 +91,14 @@ public class LoginPortal {
         return driver;
     }
 
-    //获取环境配置
+    //获取环境配置，envtest测试环境；envyanshi演示环境；envyqtest延庆测试环境；envgstest甘肃测试环境
     public static List<String> env() {
 
 //        String envString = "envtest";//测试环境
 //        String envString = "envyanshi";//演示环境
-        String envString = "envyqtest";//延庆测试环境
+//        String envString = "envyqtest";//延庆测试环境
+        String envString = "envgstest";//甘肃测试环境
+
 
         Properties pro = new Properties();
         InputStream prois;

@@ -5,10 +5,7 @@ import base.LoginPortal;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.io.IOException;
 
 /**
  * @author wufeng
@@ -39,8 +36,21 @@ public class CreateContent extends LoginPortal {
         driver.switchTo().frame("ueditor_0");//切换到编辑框iframe
         Thread.sleep(200);
         driver.findElement(By.tagName("p")).sendKeys("这是稿件内容~~~~~");//编辑框录入内容
+        Thread.sleep(200);
         driver.switchTo().defaultContent();//切换到默认的页面
         Thread.sleep(200);
+        if (CommonMethod.isJudgingElement(driver, By.cssSelector("div.edui-box.edui-button.edui-for-searcherrorcode.edui-default"))) {//如果有智能校验，进行智能校验，部分项目新增文稿必须进行智能校验
+            driver.findElement(By.cssSelector("div.edui-box.edui-button.edui-for-searcherrorcode.edui-default")).click();//点击智能校验
+            for (int i = 0; i < 3; i++) {
+                Thread.sleep(2000);
+                if (CommonMethod.isJudgingElement(driver, By.id("errorInfo"))) {
+                    Thread.sleep(200);
+                    driver.findElement(By.cssSelector("span.right-box-close.layui-icon.layui-icon-close")).click();
+                    Thread.sleep(500);
+                    break;
+                }
+            }
+        }
         driver.findElement(By.xpath("//form[@id='attributeInfo']/div[@class='content-item']/div[@class='content-item-body item-no-border']/div[4]/div/div[last()]/i")).click();//排版方式点击文本
         Thread.sleep(500);
         driver.findElement(By.id("saveAndCloseBtn")).click();//点击保存
@@ -125,7 +135,7 @@ public class CreateContent extends LoginPortal {
         driver.switchTo().defaultContent();//切换到默认页面
 
         Thread.sleep(2000);
-        if(!CommonMethod.isJudgingElement(driver,By.className("sy-tools_setImg"))) Thread.sleep(2000);
+        if (!CommonMethod.isJudgingElement(driver, By.className("sy-tools_setImg"))) Thread.sleep(2000);
         driver.findElement(By.className("sy-tools_setImg")).click();//视频封面设置为列表图
         Thread.sleep(1000);
         driver.findElement(By.cssSelector("button.cropSet-button.ok.save")).click();//确定设置为列表图
@@ -172,7 +182,7 @@ public class CreateContent extends LoginPortal {
         driver.findElement(By.xpath("//*[@id='attributeInfo']/div[1]/div[2]/div[5]/div/div/div[1]/a[1]")).click();//点击列表图上传
         Thread.sleep(500);
         CommonMethod.getImg(driver);//素材库选择列表图
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         driver.findElement(By.id("saveAndCloseBtn")).click();//点击保存
         System.out.println("~~~ createAudio()，新建音频稿，执行成功 ~~~");
@@ -188,7 +198,8 @@ public class CreateContent extends LoginPortal {
             driver = login();//初始化浏览器
             for (int i = 0; i < 3; i++) {
                 if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {//校验是否没有header（header是portal页面中的标签）
-                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn"))) driver = login();//是否需要登录，需要登录则登录
+                    if (CommonMethod.isJudgingElement(driver, By.className("loginBtn")))
+                        driver = login();//是否需要登录，需要登录则登录
                     driver.get(domain + "/content/content/list/init");//url直接跳转到新闻管理链接
                     Thread.sleep(3000);
                     if (!CommonMethod.isJudgingElement(driver, By.className("fold-pack"))) {//是否未跳转到新闻管理页面成功

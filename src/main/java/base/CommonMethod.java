@@ -301,16 +301,4 @@ public class CommonMethod {
         targetLocator.window(handle);// 切换到对应标签页
     }
 
-//    //验证码识别
-//    public static void vCode(WebDriver driver) throws IOException {
-//        WebElement ele=driver.findElement(By.id("canvas"));
-//        File screenshot=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-//        BufferedImage fullImg= ImageIO.read(screenshot);
-//        Point point=ele.getLocation();
-//        int eleWidth=ele.getSize().getWidth();
-//        int eleHeight=ele.getSize().getHeight();
-//        BufferedImage eleScreenshot=fullImg.getSubimage(point.getX(),point.getY(),eleWidth,eleHeight);
-//        ImageIO.write(eleScreenshot,"jpg",screenshot);
-//        File screenshotLocation=new File("D:\\autotest\\vCode");
-//    }
 }

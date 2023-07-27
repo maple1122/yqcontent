@@ -7,6 +7,7 @@
             <class name="content.NoFinishedContentTest"></class>
             <class name="content.FinishedContentTest"></class>
             <class name="content.DeleteRecycleTest"></class>
+            <class name="content.PopNewsTest"></class>
         </classes>
     </test>
     <test name="新闻管理-轮播管理">

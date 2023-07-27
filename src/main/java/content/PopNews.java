@@ -78,8 +78,12 @@ public class PopNews extends LoginPortal {
                 System.out.println("~~~ addPopNews()，新建首屏浮窗 ~~~");
             } else System.out.println("测试test频道下没有稿件");
         } else System.out.println("没找到测试频道");
-        if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")))//校验首页浮窗图层是否还是打开的
-            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+        if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close"))) {//校验首页浮窗图层是否还是打开的
+//            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+            driver.findElement(By.xpath("//div[@class='layui-layer layui-layer-page']/span/a")).click();
+            Thread.sleep(500);
+            driver.findElement(By.className("layui-layer-btn1")).click();
+        }
         Thread.sleep(3000);
     }
 
@@ -91,19 +95,25 @@ public class PopNews extends LoginPortal {
             addPopNews();//新增autoTest数据
             searchPopNews();//再次搜索autotest数据
         }
-        List<WebElement> news = driver.findElements(By.xpath("//ul[@id='xlist']/li"));//获取首页浮窗数据list
-        Actions action = new Actions(driver);
-        action.moveToElement(news.get(0)).perform();//鼠标悬浮第一条数据
-        Thread.sleep(100);
-        news.get(0).findElement(By.xpath("./div/div[2]/div[2]/a[1]")).click();//点击第一条数据的修改
-        Thread.sleep(500);
-        driver.findElement(By.xpath("//form[@id='formFw']/div[6]/div/input")).sendKeys("-update" + System.currentTimeMillis());//修改名称
-        Thread.sleep(200);
-        driver.findElement(By.className("layui-layer-btn0")).click();//点击确定修改
-        Thread.sleep(1000);
-        System.out.println("~~~ editPopNews()，编辑首屏浮窗 ~~~");
-        if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")))//校验首页浮窗图层是否还在
-            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='xlist']/li"))) {//没找到autoTest数据
+            List<WebElement> news = driver.findElements(By.xpath("//ul[@id='xlist']/li"));//获取首页浮窗数据list
+            Actions action = new Actions(driver);
+            action.moveToElement(news.get(0)).perform();//鼠标悬浮第一条数据
+            Thread.sleep(100);
+            news.get(0).findElement(By.xpath("./div/div[2]/div[2]/a[1]")).click();//点击第一条数据的修改
+            Thread.sleep(500);
+            driver.findElement(By.xpath("//form[@id='formFw']/div[6]/div/input")).sendKeys("-update" + System.currentTimeMillis());//修改名称
+            Thread.sleep(200);
+            driver.findElement(By.className("layui-layer-btn0")).click();//点击确定修改
+            Thread.sleep(1000);
+            System.out.println("~~~ editPopNews()，编辑首屏浮窗 ~~~");
+            if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close"))) {//校验首页浮窗图层是否还是打开的
+//            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+                driver.findElement(By.xpath("//div[@class='layui-layer layui-layer-page']/span/a")).click();
+                Thread.sleep(500);
+                driver.findElement(By.className("layui-layer-btn1")).click();
+            }
+        } else System.out.println("没有可编辑的浮窗数据");
         Thread.sleep(3000);
     }
 
@@ -115,17 +125,23 @@ public class PopNews extends LoginPortal {
             addPopNews();//新增autoTest数据
             searchPopNews();//再次搜索autotest数据
         }
-        List<WebElement> news = driver.findElements(By.xpath("//ul[@id='xlist']/li"));//获取首页浮窗数据list
-        Actions action = new Actions(driver);
-        action.moveToElement(news.get(0)).perform();//鼠标悬浮第一条数据
-        Thread.sleep(100);
-        news.get(0).findElement(By.xpath("./div/div[2]/div[2]/a[2]")).click();//点击第一条数据的删除
-        Thread.sleep(200);
-        driver.findElement(By.className("layui-layer-btn0")).click();//确定删除
-        System.out.println("~~~ deletePopNews()，删除首屏浮窗，执行成功 ~~~");
-        Thread.sleep(1000);
-        if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")))//校验首页浮窗图层是否还在
-            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='xlist']/li"))) {//没找到autoTest数据
+            List<WebElement> news = driver.findElements(By.xpath("//ul[@id='xlist']/li"));//获取首页浮窗数据list
+            Actions action = new Actions(driver);
+            action.moveToElement(news.get(0)).perform();//鼠标悬浮第一条数据
+            Thread.sleep(100);
+            news.get(0).findElement(By.xpath("./div/div[2]/div[2]/a[2]")).click();//点击第一条数据的删除
+            Thread.sleep(200);
+            driver.findElement(By.className("layui-layer-btn0")).click();//确定删除
+            System.out.println("~~~ deletePopNews()，删除首屏浮窗，执行成功 ~~~");
+            Thread.sleep(1000);
+            if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close"))) {//校验首页浮窗图层是否还是打开的
+//            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+                driver.findElement(By.xpath("//div[@class='layui-layer layui-layer-page']/span/a")).click();
+                Thread.sleep(500);
+                driver.findElement(By.className("layui-layer-btn1")).click();
+            }
+        } else System.out.println("没有可删除的测试浮窗数据");
         Thread.sleep(3000);
     }
 
@@ -137,18 +153,24 @@ public class PopNews extends LoginPortal {
             addPopNews();//新增autoTest数据
             searchPopNews();//再次搜索autotest数据
         }
-        List<WebElement> news = driver.findElements(By.xpath("//ul[@id='xlist']/li"));//获取首页浮窗数据list
-        Actions action = new Actions(driver);
-        action.moveToElement(news.get(0)).perform();//鼠标悬浮第一条数据
-        boolean opened = false;
-        Thread.sleep(100);
-        if (news.get(0).findElement(By.xpath("./div/div[2]/div[2]/div")).getAttribute("class").contains("onswitch"))//校验是否是已开启的
-            opened = true;//已开启打标
-        news.get(0).findElement(By.xpath("./div/div[2]/div[2]/div")).click();//点击第一条数据的开启关闭
-        if (opened) System.out.println("~~~ turnOnOrOff()，关闭首屏浮窗，执行成功 ~~~");//如果原为已开启则操作后关闭
-        else System.out.println("~~~ turnOnOrOff()，开启首屏浮窗，执行成功 ~~~");//如果原为未开启则操作后开启
-        if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")))//校验首页浮窗图层是否还在
-            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='xlist']/li"))) {//没找到autoTest数据
+            List<WebElement> news = driver.findElements(By.xpath("//ul[@id='xlist']/li"));//获取首页浮窗数据list
+            Actions action = new Actions(driver);
+            action.moveToElement(news.get(0)).perform();//鼠标悬浮第一条数据
+            boolean opened = false;
+            Thread.sleep(100);
+            if (news.get(0).findElement(By.xpath("./div/div[2]/div[2]/div")).getAttribute("class").contains("onswitch"))//校验是否是已开启的
+                opened = true;//已开启打标
+            news.get(0).findElement(By.xpath("./div/div[2]/div[2]/div")).click();//点击第一条数据的开启关闭
+            if (opened) System.out.println("~~~ turnOnOrOff()，关闭首屏浮窗，执行成功 ~~~");//如果原为已开启则操作后关闭
+            else System.out.println("~~~ turnOnOrOff()，开启首屏浮窗，执行成功 ~~~");//如果原为未开启则操作后开启
+            if (CommonMethod.isJudgingElement(driver, By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close"))) {//校验首页浮窗图层是否还是打开的
+//            driver.findElement(By.cssSelector("i.cbtn.bullet-btn-no.btn-no.close")).click();//关闭首页浮窗图层
+                driver.findElement(By.xpath("//div[@class='layui-layer layui-layer-page']/span/a")).click();
+                Thread.sleep(500);
+                driver.findElement(By.className("layui-layer-btn1")).click();
+            }
+        } else System.out.println("没有可开启或关闭的测试浮窗数据");
         Thread.sleep(3000);
     }
 
