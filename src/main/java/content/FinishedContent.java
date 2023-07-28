@@ -9,8 +9,6 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 
-import static javax.management.Query.in;
-
 /**
  * @author wufeng
  * @date 2022/2/23 16:48
@@ -73,9 +71,12 @@ public class FinishedContent extends LoginPortal {
     //关联并排序
     public static void relateAndSort(int type) throws InterruptedException {
         unRelateAll();//清空已关联的测试稿件
+        Thread.sleep(2000);
         int testSign = 0;//可冻结的稿件位置-1
         String label;
-        if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@class='opt-bar-bt clearfix']/li[@data-type='sortAndRelate']"))) {
+        CommonMethod.getTestTree(driver);//切换的测试test频道
+        WebElement article = CommonMethod.getTestArticle(driver, 2);//切换到成稿区
+        if (CommonMethod.isJudgingElement(driver, By.xpath("//div[@class='operateListbar']/ul/li[@data-type='sortAndRelate']"))) {
             if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='ulListArea2']/li"))) {//校验是否有数据
                 List<WebElement> lists = driver.findElements(By.xpath("//ul[@id='ulListArea2']/li"));//获取稿件列表
                 boolean testable = false;//是否可冻结
@@ -94,9 +95,8 @@ public class FinishedContent extends LoginPortal {
                         break;
                     }
                 }
-            }
-            CommonMethod.getTestTree(driver);//切换的测试test频道
-            WebElement article = CommonMethod.getTestArticle(driver, 2);//切换到成稿区
+            }else System.out.println("VVVVV");
+
             if (article != null) {//如果稿件非空
                 article.findElement(By.xpath("div/div/div/input")).click();//选择测试稿件
                 Thread.sleep(200);
@@ -106,15 +106,33 @@ public class FinishedContent extends LoginPortal {
                     if (CommonMethod.isJudgingElement(driver, By.xpath("//ul[@id='undefined_1_ul']/li")))
                         break;//循环等待到取到了频道列表
                 }
+                Thread.sleep(1000);
+                driver.findElement(By.xpath("//div[@class='layui-layer-content']/div/div/input")).sendKeys("频道测试");
+                driver.findElement(By.xpath("//div[@class='layui-layer-content']/div/div/button")).click();
+                Thread.sleep(500);
                 //选择关联频道
                 List<WebElement> list1, list2;//定义一级、二级频道
                 Boolean relate = false;
                 list1 = driver.findElements(By.xpath("//ul[@id='undefined_1_ul']/li"));//第一层频道列表
+//                for (int i1 = 0; i1 < list1.size(); i1++) {
+//                    list2 = list1.get(i1).findElements(By.xpath("ul/li"));//第二层频道列表
+//                    for (int i2 = 0; i2 < list2.size(); i2++) {
+//                        if (list2.get(i2).findElement(By.tagName("a")).getAttribute("title").equals("频道测试")) {//找到测试频道
+//                            System.out.println("555");
+//                            list2.get(i2).findElement(By.xpath("./span[2]")).click();//选择测试频道
+//                            System.out.println("666");
+//                            relate = true;
+//                            break;
+//                        }
+//                    }
+//                    if (relate) break;
+//                }
+//
                 for (int i1 = 0; i1 < list1.size(); i1++) {
                     list2 = list1.get(i1).findElements(By.xpath("ul/li"));//第二层频道列表
-                    for (int i2 = 0; i2 < list2.size(); i2++) {
-                        if (list2.get(i2).findElement(By.tagName("a")).getAttribute("title").equals("频道测试")) {//找到测试频道
-                            list2.get(i2).findElement(By.xpath("span[2]")).click();//选择测试频道
+                    for (int i2=0;i2<list2.size();i2++){
+                        if (list2.get(i2).getAttribute("style").contains("block")){
+                            list2.get(i2).findElement(By.xpath("span[2]")).click();
                             relate = true;
                             break;
                         }
@@ -191,6 +209,7 @@ public class FinishedContent extends LoginPortal {
                 System.out.println("~~~ unrelateAll()，已取消当前页auto数据的关联 ~~~");
             } else System.out.println("没有关联的自动化测试数据");
         } else System.out.println("没有关联数据");
+        Thread.sleep(2000);
         driver.findElement(By.xpath("//form[@id='formDemo']/ul/li[2]")).click();
         Thread.sleep(3000);
     }

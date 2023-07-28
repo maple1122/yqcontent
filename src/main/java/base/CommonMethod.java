@@ -41,7 +41,7 @@ public class CommonMethod {
             Thread.sleep(1000);
 
             driver.findElement(By.cssSelector("button.cropSet-button.ok.save")).click();//保存图片
-            Thread.sleep(2000);
+            Thread.sleep(3000);
 
             if (isJudgingElement(driver, By.cssSelector("button.cropSet-button.ok.save")))//校验是否还存在保存按钮-未添加图片成功
                 driver.findElement(By.cssSelector("button.cropSet-button.cancel")).click();//点击取消关闭图层
